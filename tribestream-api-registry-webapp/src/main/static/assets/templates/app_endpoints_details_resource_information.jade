@@ -7,7 +7,9 @@ div
         div(data-tribe-multiselect, data-selected-options="endpoint.operation['x-tribestream-api-registry']['api-versions']", data-available-options="[]")
       div(data-submenu="true", app-endpoints-details-toc-anchor="Status")
         span Status
-        i(data-tribe-editable-option, data-value="endpoint.operation['x-tribestream-api-registry'].status", data-options="statusOptions")
+        div(data-tribe-singleselect,
+            data-selected-option="endpoint.operation['x-tribestream-api-registry'].status",
+            data-available-options="statusOptions")
     div
       div(data-submenu="true", app-endpoints-details-toc-anchor="Request formats")
         span Request formats
