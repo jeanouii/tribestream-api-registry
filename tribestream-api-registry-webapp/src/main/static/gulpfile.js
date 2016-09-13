@@ -31,7 +31,8 @@ gulp.task('css-third-party', function () {
                 './bower_components/open-sans/css/open-sans.min.css',
                 './bower_components/normalize-css/normalize.css',
                 './bower_components/font-awesome/css/font-awesome.min.css',
-                './bower_components/codemirror/lib/codemirror.css'
+                './bower_components/codemirror/lib/codemirror.css',
+                './bower_components/highlightjs/styles/idea.css'
             ]),
             // note it overrides some codemirror styles and we want to keep ours so relying on a wrapper class
             gulp.src(['./bower_components/simplemde/dist/simplemde.min.css'])
@@ -191,6 +192,7 @@ gulp.task('js-third-party', function () {
         './bower_components/codemirror/mode/markdown/markdown.js',
         './bower_components/marked/lib/marked.js',
         './bower_components/angular-marked/dist/angular-marked.min.js', // TODO: remove and use simplemde?
+        './bower_components/highlightjs/highlight.pack.min.js',
         './bower_components/simplemde/dist/simplemde.min.js',
         './bower_components/simplemde-angular/dist/simplemde-angular.min.js'
     ]).pipe(concat('_.js')).pipe(gulp.dest(workdir + 'app/third-party/')));

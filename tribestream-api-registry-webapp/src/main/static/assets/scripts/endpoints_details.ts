@@ -318,9 +318,9 @@ angular.module('tribe-endpoints-details', [
             scope: true,
             controller: ['$scope', '$timeout', function ($scope, $timeout) {
                 $scope.markdownOptions = {
-                    autoDownloadFontAwesome: true, // FIXME: make it "local" through gulp
+                    autoDownloadFontAwesome: false,
                     renderingConfig: {
-                        codeSyntaxHighlighting: false // TODO: set to true importing highlightjs
+                        codeSyntaxHighlighting: true
                     },
                     forceSync: true,
                     spellChecker: false
