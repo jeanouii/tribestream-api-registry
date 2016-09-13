@@ -1,7 +1,10 @@
 div
   .resp-body
     h2 Request Body
-    div(data-tribe-editable-block, data-content="endpoint.respBody")
+    div.simplemde
+        textarea(simplemde="markdownOptions", ng-model="endpoint.respBody")
+    // simplemde replaces this: div(data-tribe-editable-block, data-content="endpoint.respBody")
+    div(style="clear: both;") &nbsp;
   .expected
     h2 Expected values
       div(x-ng-click="addExpectedValue();")

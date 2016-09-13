@@ -21,7 +21,8 @@
     "angular-ui-codemirror": "~0.3.0",
     "angular-marked": "^1.2.2",
     "mocha": "^3.0.2",
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "simplemde-angular": "^0.0.1"
   },
   "resolutions": {
     "angular": "1.5.5"

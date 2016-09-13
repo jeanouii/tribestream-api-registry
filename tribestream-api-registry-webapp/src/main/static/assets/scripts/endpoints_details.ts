@@ -2,7 +2,8 @@
 
 angular.module('tribe-endpoints-details', [
     'website-services',
-    'website-services-endpoints'
+    'website-services-endpoints',
+    'simplemde'
 ])
 
     .directive('appEndpointsDetailsHeader', ['$window', '$timeout', '$filter', function ($window, $timeout, $filter) {
@@ -316,6 +317,15 @@ angular.module('tribe-endpoints-details', [
             templateUrl: 'app/templates/app_endpoints_details_response_request.html',
             scope: true,
             controller: ['$scope', '$timeout', function ($scope, $timeout) {
+                $scope.markdownOptions = {
+                    autoDownloadFontAwesome: true, // FIXME: make it "local" through gulp
+                    renderingConfig: {
+                        codeSyntaxHighlighting: false // TODO: set to true importing highlightjs
+                    },
+                    forceSync: true,
+                    spellChecker: false
+                };
+
                 $scope.$watch('endpoint.operation', function() {
                     if ($scope.endpoint && $scope.endpoint.operation && $scope.endpoint.operation.responses) {
                         let positiveResponses = Object.keys($scope.endpoint.operation.responses)
@@ -446,7 +456,7 @@ angular.module('tribe-endpoints-details', [
                 'endpointId': '='
             },
             controller: [
-                '$scope', 'tribeEndpointsService', 'tribeFilterService', '$timeout', '$filter', '$log', 'systemMessagesService'
+                '$scope', 'tribeEndpointsService', 'tribeFilterService', '$timeout', '$filter', '$log', 'systemMessagesService',
                 function ($scope, srv, tribeFilterService, $timeout, $filter, $log, systemMessagesService) {
                     $timeout(function () {
                         $scope.$apply(function () {
