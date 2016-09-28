@@ -86,6 +86,8 @@
 
     <version.tomitribe-util>1.2.1</version.tomitribe-util>
 
+    <version.arquillian>1.1.11.Final</version.arquillian>
+
     <version.jackson>2.8.1</version.jackson>
     <version.lucene>4.10.2</version.lucene>
     <version.hibernate>4.3.11.Final</version.hibernate>

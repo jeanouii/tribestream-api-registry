@@ -24,7 +24,6 @@ import org.apache.openejb.testing.ContainerProperties;
 import org.apache.openejb.testing.RandomPort;
 import org.apache.tomee.loader.TomcatHelper;
 import org.tomitribe.tribestream.registryng.service.serialization.CustomJacksonJaxbJsonProvider;
-import org.tomitribe.util.Join;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
