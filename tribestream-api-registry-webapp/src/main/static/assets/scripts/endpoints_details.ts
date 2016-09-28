@@ -216,29 +216,9 @@ angular.module('tribe-endpoints-details', [
                         });
                     });
                 });
-                $scope.$watch('endpoint.params', function () {
-                    var params = $scope.$eval('endpoint.params');
-                    if (!params) {
-                        return;
-                    }
-                    $timeout(function () {
-                        $scope.$apply(function () {
-                            _.each(params, function (p) {
-                                if (!p.sampleValues) {
-                                    p.sampleValues = [];
-                                }
-                            });
-                            $scope.params = params;
-                        });
-                    });
-                });
-                $scope.removeParam = function (p) {
-                    $timeout(function () {
-                        $scope.$apply(function () {
-                            $scope.endpoint.params = _.without($scope.endpoint.params, p);
-                        });
-                    });
-                };
+                $scope.removeParam = (p) => $timeout(() => $scope.$apply(() => {
+                    $scope.endpoint.operation.parameters = _.without($scope.endpoint.operation.parameters, p);
+                }));
                 $scope.addParam = function () {
                     var params = $scope.$eval('endpoint.operation.parameters');
                     if (!params) {
@@ -253,7 +233,7 @@ angular.module('tribe-endpoints-details', [
                             params.unshift({
                                 type: 'string',
                                 style: 'query',
-                                sampleValues: [],
+                                sampleValues: '',
                                 required: false
                             });
                             $scope.params = params;
@@ -375,16 +355,37 @@ angular.module('tribe-endpoints-details', [
                 $scope.removeErrorCode = function (code) {
                     $timeout(function () {
                         $scope.$apply(function () {
-                            $scope.endpoint.errors = _.without($scope.endpoint.errors, code);
+                            if (!$scope.endpoint.operation) {
+                                return;
+                            }
+                            if (!$scope.endpoint.operation['x-tribestream-api-registry']) {
+                                return;
+                            }
+                            if (!$scope.endpoint.operation['x-tribestream-api-registry']['response-codes']) {
+                                return;
+                            }
+                            $scope.endpoint.operation['x-tribestream-api-registry']['response-codes'] = _.without(
+                                $scope.endpoint.operation['x-tribestream-api-registry']['response-codes'],
+                                code
+                            );
                         });
                     });
                 };
                 $scope.addErrorCode = function () {
                     $timeout(function () {
                         $scope.$apply(function () {
-                            $scope.endpoint.errors.push({
-                                statusCode: 0,
-                                errorCode: 0,
+                            if (!$scope.endpoint.operation) {
+                                $scope.endpoint.operation = {};
+                            }
+                            if (!$scope.endpoint.operation['x-tribestream-api-registry']) {
+                                $scope.endpoint.operation['x-tribestream-api-registry'] = {};
+                            }
+                            if (!$scope.endpoint.operation['x-tribestream-api-registry']['response-codes']) {
+                                $scope.endpoint.operation['x-tribestream-api-registry']['response-codes'] = [];
+                            }
+                            $scope.endpoint.operation['x-tribestream-api-registry']['response-codes'].push({
+                                http_status: 0,
+                                error_code: 0,
                                 message: '',
                                 description: ''
                             });
@@ -408,7 +409,10 @@ angular.module('tribe-endpoints-details', [
                         });
                     });
                 };
-            }]
+            }],
+            link: (scope, el) => {
+                scope.$on('$destroy', () => el.remove());
+            }
         };
     }])
 
