@@ -115,11 +115,11 @@
       <exclusions>
         <exclusion>
           <groupId>org.jboss.spec.javax.transaction</groupId>
-          <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+          <artifactId>jboss-transaction-api_1.2_spec</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.hibernate.javax.persistence</groupId>
-          <artifactId>hibernate-jpa-2.0-api</artifactId>
+          <artifactId>hibernate-jpa-2.1-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -180,21 +180,6 @@
     <plugins>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <attachClasses>true</attachClasses>
-          <webResources>
-            <resource>
-              <directory>target/static-resources</directory>
-            </resource>
-          </webResources>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.tomee.maven</groupId>
         <artifactId>tomee-embedded-maven-plugin</artifactId>
         <version>7.0.1</version>
@@ -219,11 +204,6 @@
           </roles>
         </configuration>
         <dependencies>
-          <dependency>
-            <groupId>org.tomitribe</groupId>
-            <artifactId>tomitribe-util</artifactId>
-            <version>${version.tomitribe-util}</version>
-          </dependency>
           <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -251,7 +231,6 @@
             <openapirepo.dir>${project.basedir}/target/test-classes</openapirepo.dir>
           </systemVariables>
           <libs>
-            <lib>org.tomitribe:tomitribe-util:${version.tomitribe-util}</lib>
             <lib>commons-io:commons-io:${version.commons-io}</lib>
           </libs>
         </configuration>
@@ -311,6 +290,58 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+              <failOnMissingWebXml>false</failOnMissingWebXml>
+              <attachClasses>true</attachClasses>
+              <webResources>
+                <resource>
+                  <directory>target/static-resources</directory>
+                </resource>
+              </webResources>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>custom-deploy</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+              <classifier>${deploy-name}</classifier>
+              <failOnMissingWebXml>false</failOnMissingWebXml>
+              <attachClasses>true</attachClasses>
+              <webResources>
+                <resource>
+                  <directory>target/static-resources</directory>
+                </resource>
+              </webResources>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
 
 </project>
 
