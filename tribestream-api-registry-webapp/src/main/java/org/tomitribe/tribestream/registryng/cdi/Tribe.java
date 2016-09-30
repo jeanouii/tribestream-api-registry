@@ -16,23 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.tomitribe.tribestream.registryng.domain;
+package org.tomitribe.tribestream.registryng.cdi;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.apache.deltaspike.core.util.metadata.AnnotationInstanceProvider;
 
-import java.util.Collection;
+import javax.inject.Qualifier;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class SearchPage {
-    private Collection<SearchResult> results;
-    private int total;
-    private int current;
-    private Collection<CloudItem> applications;
-    private Collection<CloudItem> categories;
-    private Collection<CloudItem> tags;
-    private Collection<CloudItem> roles;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Qualifier
+@Retention(RUNTIME)
+@Target({TYPE, FIELD, PARAMETER, METHOD})
+public @interface Tribe {
+    Annotation LITERAL = AnnotationInstanceProvider.of(Tribe.class);
 }
