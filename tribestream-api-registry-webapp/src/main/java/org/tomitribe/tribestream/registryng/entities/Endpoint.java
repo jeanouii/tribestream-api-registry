@@ -19,7 +19,10 @@
 package org.tomitribe.tribestream.registryng.entities;
 
 import io.swagger.models.Operation;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.envers.Audited;
+import org.tomitribe.tribestream.registryng.service.serialization.SwaggerJsonMapperProducer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +37,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.io.IOException;
 
 import static org.tomitribe.tribestream.registryng.entities.Normalizer.normalize;
 
@@ -70,6 +74,8 @@ import static org.tomitribe.tribestream.registryng.entities.Normalizer.normalize
 })
 @EntityListeners(OpenAPIDocumentSerializer.class)
 @Audited
+@Getter
+@Setter
 public class Endpoint extends AbstractEntity {
     public interface Queries {
         String FIND_ALL = "Endpoint.findAll";
@@ -94,7 +100,7 @@ public class Endpoint extends AbstractEntity {
     private String document;
 
     @Column(name = "HUMAN_READABLE_PATH", nullable = false)
-    private String humanReadablePath;
+    private String humanReadablePath; // stored in case we make it editable
 
     private transient Operation operation;
 
@@ -107,51 +113,11 @@ public class Endpoint extends AbstractEntity {
         }
     }
 
-    public OpenApiDocument getApplication() {
-        return application;
-    }
-
-    public void setApplication(OpenApiDocument application) {
-        this.application = application;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getVerb() {
-        return verb;
-    }
-
-    public void setVerb(String verb) {
-        this.verb = verb;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
-
     public Operation getOperation() {
-        return operation;
-    }
-
-    public void setOperation(Operation operation) {
-        this.operation = operation;
-    }
-
-    public String getHumanReadablePath() {
-        return humanReadablePath;
-    }
-
-    public void setHumanReadablePath(String humanReadablePath) {
-        this.humanReadablePath = humanReadablePath;
+        try {
+            return operation == null ? (operation = SwaggerJsonMapperProducer.lookup().readValue(document, Operation.class)) : operation;
+        } catch (final IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
